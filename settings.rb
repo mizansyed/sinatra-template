@@ -5,6 +5,8 @@ require "dm-validations"
 require "dm-migrations"
 require "dm-serializer"
 require "dm-sqlite-adapter"
+require "sinatra/logger"
+require "json"
 
 require "./lib/init"
 
@@ -12,6 +14,9 @@ Dir.glob("./app/controllers/*.rb") {|f| require f}
 Dir.glob("./app/models/*.rb") {|f| require f}
 
 class MyApp < Sinatra::Base
+  register Sinatra::Logger
+  register Sinatra::Logger::RequestLogger
+  
   helpers Helpers::Common
   
   enable    :method_override
@@ -27,8 +32,9 @@ class MyApp < Sinatra::Base
     DataMapper.auto_upgrade!
   end
 
-  configure :development do
+  configure :development do    
     enable :logging, :dump_errors, :raise_errors
+    set :logger_level, :debug
   end
 
   configure :qa do
@@ -37,6 +43,8 @@ class MyApp < Sinatra::Base
 
   configure :production do
     set :raise_errors,      false   #false will show nicer error page
-    set :show_exceptions,   false   #true will ignore raise_errors and display backtrace in browser    
+    set :show_exceptions,   false   #true will ignore raise_errors and display backtrace in browser   
+    set :logger_level, :info
+     
   end
 end

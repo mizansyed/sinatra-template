@@ -5,6 +5,8 @@ gem "thin"
 gem "datamapper"
 gem "dm-migrations"
 gem "dm-sqlite-adapter"
+gem "sinatra-logger"
+gem "json"
 
 group :development do
   gem "awesome_print"
