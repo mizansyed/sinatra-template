@@ -3,19 +3,16 @@ require 'sinatra/base'
 module Sinatra
   module Logger
     
+    # Basic request logger. Logs request method, path, parameters and request processing time to log/environment.log
     module RequestLogger
       def self.registered(app)
-        # Log request method, path and parameters to log file and stdout
+        
         app.before do
           @request_start_time = Time.now
                     
-          entry = case settings.environment
+          case settings.environment
           when :development, :production
-            "[#{Time.now}] #{request.request_method} #{request.path} with: #{params.to_json}"
-          else
-            nil
-          end
-          if entry
+            entry = "[#{Time.now}] #{request.request_method} #{request.path} with: #{params.to_json}"
             puts entry
             logger.info entry
           end
@@ -25,13 +22,9 @@ module Sinatra
           request_time = (Time.now - @request_start_time)*1000
           entry = case settings.environment
           when :development, :production
-            "Completed #{response.status} in #{'%.2f' % request_time}ms"
-          else
-            nil
-          end
-          if entry
-            puts entry
-            logger.info entry
+           entry =  "Completed #{response.status} in #{'%.2f' % request_time}ms"
+           puts entry
+           logger.info entry
           end
         end
       end

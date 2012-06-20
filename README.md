@@ -9,6 +9,7 @@ What's inside?
 * capybara + minitest for integration tests (no need for rspec)
 * yard for documentation
 * Rakefile, Gemfile, .rvmrc, .gitignore
+* Basic custom request logging
 
 Folders Structure
 ------------------
@@ -19,6 +20,11 @@ Folders Structure
       views/		# erb views
       models/		# models
 	  controllers/	# controllers (routes)
+
+    lib/
+      helpers/		# custom controller/view helpers
+      sinatra/
+        /logger/	# basic request logger
 
     test/         
       models      	# minitest
